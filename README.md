@@ -12,12 +12,12 @@ $source .venv/bin/activate\
 #install flask\
 $pip3 install flask\
 #install sqlalchemy for database\
-$pip3 install flask-sqlalchemy\
+$pip3 install flask-sqlalchemy
 
 
 #create environment variables YOU NEED TO DO THESE TWO WHENEVE YOU EXIT THE TERMINAL\
 $export FLASK_APP=application.py\
-$export FLASK_ENV=development\
+$export FLASK_ENV=development
 
 
 #setup database with python terminal\
@@ -30,11 +30,11 @@ $from application import db\
 $db.create_all()\
 
 #if you don't do the two lines below and try to create user, you will get error: name 'User' is not defined - just have to import the User\
-$from application import User\
-$from application import Shoe\
+$from application import User
+$from application import Shoe
 
-#run flask server\
-$flask run\
+#run flask server
+$flask run
 
-#exit python terminal \
-$exit()\
+#exit python terminal 
+$exit()
