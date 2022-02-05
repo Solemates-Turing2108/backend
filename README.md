@@ -6,7 +6,7 @@
 ### on the terminal: pull the repo and cd
 
 #create a virtual environment\
-$python3 -m venv .venv\
+$python3 -m venv .venv
 #activate that environment\
 $source .venv/bin/activate\
 #install flask\
