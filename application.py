@@ -2,13 +2,33 @@
 #push it up to github
 #json contract
 from flask import Flask, request
+from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy #get the database sqlalchemy
 
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db' #to connect the app to the database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'haewon208@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Qwer1234-5Turing'
+# app.config['MAIL_DEBUG'] = True  #this and below wasn't there for https://mailtrap.io/blog/flask-email-sending/  if this is true, it will give you some error messages when it doesn't work
+# app.config['DEBUG'] = True  #this and below wasn't there for https://mailtrap.io/blog/flask-email-sending/  if this is true, it will give you some error messages when it doesn't work
+# app.config['TESTING'] = False #this one and the below together will make sure the emails aren't actually sent for testing
+app.config['MAIL_DEFAULT_SENDER'] = 'haewon208@gmail.com'  #if you don't specify the sender, this will be sent
+# or you can also add:
+# app.config['MAIL_DEFAULT_SENDER'] = ('Haewon from the Solemates', 'anthony@prettyprinted.com')
+app.config['MAIL_MAX_EMAILS'] = 10 #just for preventing accidents when you are testing. None by default
+# app.config['MAIL_SUPPRESS_SEND'] = False #then if testing is true, the suppress_send is true too.
+app.config['MAIL_ASCII_ATTACHMENTS'] = False #convert
+
+mail = Mail(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,9 +53,18 @@ class Shoe(db.Model):
 
 @app.route('/')
 def index():
-    return "Hello!"
+        # msg = Message('Hey There', sender='email_address', ...)  Hey there=title, we don't need sender because we configed it, then recipients
+    msg = Message('Hey There', recipients=['haewonito@gmail.com'])
+    msg.body = 'This is the third test email sent from Haewon\'s app. You don\'t have to reply.'
 
+    mail.send(msg)
 
+    return 'Message has been sent!' # so that we can know and the fucntion has some return value
+
+if __name__ == '__main__':
+    app.run()
+
+# do python application.py and the email will be sent
 @app.route('/shoes')
 def get_shoes():
     shoes = Shoe.query.all()
